@@ -147,31 +147,23 @@ int main(void)
 
 
 
-  if (timer_interrupt_flag)
+  if (timer_interrupt_flag && adc_flag)
  	 {
  	    timer_interrupt_flag = 0;
 
+ 	    adc_flag = 0;
 
-
- 	    if( adc_flag )
- 	     {
-
- 	        adc_flag = 0;
-
- 	       for (int i = 0; i < BUFFER_SIZE; i++)
- 	         {
- 	           buffer2[i] = adc_values[i];
- 	           i = (i + 1) % BUFFER_SIZE;
- 	         }
-
+ 	    for (int i = 0; i < BUFFER_SIZE; i++)
+ 	      {
+ 	          buffer2[i] = adc_values[i];
  	      }
 
- 	   for (int i = 0; i < BUFFER_SIZE; i++)
- 	    {
- 	      uint16_t adc_value = buffer2[i];
- 	      sprintf(tx_buff, "ADC:%u\r\n", adc_value);
- 	      HAL_UART_Transmit(&huart1, (uint8_t *)tx_buff, strlen(tx_buff), BUFFER_SIZE);
 
+ 	    for (int i = 0; i < BUFFER_SIZE; i++)
+ 	     {
+ 	       uint16_t adc_value = buffer2[i];
+ 	       sprintf(tx_buff, "ADC:%u\n", adc_value);
+ 	       HAL_UART_Transmit(&huart1, (uint8_t *)tx_buff, strlen(tx_buff), 100);
  	    }
 
 
